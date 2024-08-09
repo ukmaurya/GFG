@@ -22,6 +22,55 @@ struct Job
     int profit; // Profit if job is over before or on deadline 
 };
 */
+class disjointset{
+    public: 
+    vector<int> size , parent;
+    
+    disjointset(int n){
+        size.resize(n+1,1);
+        parent.resize(n+1);
+        for(int i=0;i<=n;i++){
+            parent[i]=i;
+        }
+    }
+    
+    int findulp(int u){
+         if(parent[u]==u){
+             return u;
+         }
+         
+       return parent[u] = findulp(parent[u]);
+    }
+    
+    void unionSize(int u , int v){
+        
+        //litle change
+    
+        
+       int x = findulp(u);
+        int y = findulp(v);
+        if(x<y){
+            parent[y]=x;  // connect to smaller slot =>smaller slot will be available
+        }
+        else{
+            parent[x]=y;
+        }
+     
+        /*if(x!=y){
+           if(size[x] <= size[y]){
+               parent[x]=parent[y];
+               size[y] += size[x];
+           }
+           else{
+               parent[y]=parent[x];
+               size[x] += size[y];
+           }
+        } */
+        return; 
+       
+       
+    }
+};
 
 class Solution 
 {
@@ -33,7 +82,7 @@ class Solution
     //Function to find the maximum profit and the number of jobs done.
     vector<int> JobScheduling(Job arr[], int n) 
     { 
-            sort(arr, arr+n,comp);
+        /*    sort(arr, arr+n,comp);   taking o(n^2) time in worst case
             int profit = 0;
             int count= 0;
             vector<int> sch(n,-1); // initially no jobs are scheduled
@@ -51,7 +100,31 @@ class Solution
             }
             
             
-            return {count , profit};
+            return {count , profit}; */
+            
+          // we will use disjointset o(nlogn) time
+          
+          sort(arr, arr+n,comp);
+          
+        
+          int maxDeadline = 0;
+          for(int i=0;i<n;i++){
+             maxDeadline = max(maxDeadline , arr[i].dead);
+          }
+          
+          disjointset ds(maxDeadline);
+          int count=0;
+          int prof =0;
+          for(int i=0;i<n;i++){
+              int slot = ds.findulp(arr[i].dead);
+              if(slot!=0){
+                  count++;
+                  prof+=arr[i].profit;
+                  ds.unionSize(slot, slot-1);
+              }
+          }
+            
+          return {count , prof};   
     } 
 };
 
