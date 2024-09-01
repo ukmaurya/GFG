@@ -8,60 +8,59 @@ using namespace std;
 //User function Template for C++
 
 class Solution {
-  
-  bool solve(int n,vector<vector<int>>&dp, bool turn){
-      // Base cases
-        if(n == 1){
-            if(turn==0){ 
+    bool solve(int n , bool turn,  vector<vector<int>> &dp){
+        if(n==0){
+            if(turn == true){
                 return false;
             }
-            else return true;
-        }
-        if(n == 0){
-          if(turn==1)
-            return false;
-          else 
-            return true;        
-        }
-        if(dp[n][turn]!=-1) 
-           return dp[n][turn];
-        bool ans = (turn==true)?false:true;
-        for (int i = 2; i <= 5; ++i){
-            
-          bool temp1 =  solve(n / i, dp,1-turn);
-          bool temp2 = false;
-          if(turn==true)
-            temp2 = false;
-          else 
-            temp2 = true;    
-          if(n - i >= 0){
-               temp2 = solve(n - i,dp,1-turn);
+            else{
+                return true;
             }
-          if(turn==1){
-              ans = ans||temp1||temp2;
-          } 
-          else{
-              ans = ans&&(temp1)&&(temp2);
-          }
-          if(turn==1 && ans==true)
-           break;
-          if(turn==0 && ans==false)
-           break;
-           
         }
-
-        return dp[n][turn] = ans;
-   }
+        else if(n==1){
+            if(turn == true){
+                return true;
+            }
+            else 
+             return false;
+        }
+        if(dp[n][turn]!=-1){
+            return dp[n][turn];
+        }
+        
+        // explore all possibilities
+        if(turn == true){
+              bool ans = false;
+          for(int i=2;i<=5;i++){
+            ans = ans||solve(n-i,!turn,dp);
+            ans = ans||solve(floor(n*1.0/i) , !turn,dp);
+           }
+           return dp[n][turn]=ans;
+        }
+        else{
+              bool ans = true;
+           for(int i=2;i<=5;i++){
+            ans = ans&&solve(n-i,!turn,dp);
+            ans = ans&&solve(floor(n*1.0/i) , !turn,dp);
+        }
+        return dp[n][turn]=ans;
+        }
+        return false;
+    }
+  
   public:
     string divAndSub(int N) {
-        if(N==1)
-         return "Arya";
-       bool turn = true;
-       vector<vector<int>> dp(N+1,vector<int>(2,-1));
-       bool ans = solve(N,dp,true);
-       if(ans==true)
-         return "Jon";
-       return "Arya";     
+        int n = N;
+         vector<vector<int>> dp(N+1,vector<int>(2,-1));
+        if(n==1 || n==0){
+            return "Arya";
+        }
+       
+       int ans = solve(N,true, dp);
+       if(ans==true){
+           return "Jon";
+       }
+       return "Arya";
     }
 };
 
