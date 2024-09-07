@@ -9,38 +9,31 @@ using namespace std;
 class Solution {
   public:
     vector<int> shortestPath(vector<vector<int>>& edges, int N,int M, int src){
-         
-         // since unit weight => we can use simple queue also , instead of priority queue
-         
-         vector<int> adj[N];
-         for(int i=0;i<M;i++){
-             adj[edges[i][0]].push_back(edges[i][1]);
-             adj[edges[i][1]].push_back(edges[i][0]);
-         }
-         vector<int> dist(N,INT_MAX);
-        // vector<int> vis(N,0);
-         queue<pair<int, int >> q; // dist , node
-         dist[src]=0;
-         q.push({0, src});
-         while(!q.empty()){
-             int node = q.front().second;
-             int d = q.front().first;
-             q.pop();
-             // relaxation of edges 
-             for(auto it: adj[node]){
-                 if(dist[it] > dist[node]+1){
-                     dist[it] = dist[node]+1;
-                     q.push({dist[it],it});
-                 }
-             }
-         }
-         for(int i=0;i<N;i++){
-             if(dist[i]==INT_MAX){
-                 dist[i]=-1;
-             }
-         }
-         
-         return dist;
+        vector<int> adj[N+1];
+        for(int i=0;i<M;i++){
+            adj[edges[i][0]].push_back(edges[i][1]);
+            adj[edges[i][1]].push_back(edges[i][0]);
+        }
+        vector<int> dist(N,INT_MAX);
+        queue<pair<int, int >>q;
+        q.push({0,src});
+        dist[src]=0;
+        while(!q.empty()){
+            int node = q.front().second;
+            int cost = q.front().first;
+            q.pop();
+            for(auto it : adj[node] ){
+                if( dist[it] >= cost+1){
+                    dist[it] = cost+1;
+                    q.push({cost+1 , it});
+                }
+            }
+        }
+        for(int i=0;i<N;i++){
+            if(dist[i]==INT_MAX)
+               dist[i] = -1;
+        }
+        return dist;
     }
 };
 
