@@ -9,37 +9,42 @@ class Solution
     public:
         vector <int> search(string pat, string txt)
         {
-         
-            string s = pat+'$'+txt;
-            // in Z algorithm z[i] = longest prefix which is same as number of character starting at i
-            // while in kmp we lps = longest prefix which is same as suffix 
-            int n = s.size();
-            int left = 0;
-            int right = 0;
-            vector<int>z(n,0);
-            
-            for(int i=1;i<n;i++){
-               if(i<right){ // index is with right boundry 
-                    z[i] = min(z[i-left] , right-i+1);
-                }
-                while(i+z[i]<n && s[i+z[i]]==s[z[i]]){
-                    z[i]++;
-                }
-                if(i+z[i]>right){ //update the boundry 
-                     left = i;
-                     right = i+z[i];
-                }
-                
-            }
-            
-            vector<int> ans;
-            int m = pat.size();
-            for(int i=m+1;i<n;i++){
-                if(z[i]==m){
-                    ans.push_back(i-m);
-                }
-            }
-          return ans;
+             txt = pat+"#"+txt;
+             int n = txt.size();
+             vector<int>z(n,0);
+             int l =0;
+             int r = 0;
+             string s = txt;
+             //same as manchers algorithm 
+             for(int i=1;i<n;i++){
+                 int mirr = i-l;
+                 if(i<r){
+                    z[i] = min(z[mirr] , r-i);
+                 }
+                    while(i+z[i]<n && s[z[i]]==s[i+z[i]]){ // in manchers we check s[i-z[i]]==s[i+z[i]]
+                        z[i]++;
+                    }
+                    if(i+z[i]>r){
+                        r = i+z[i];
+                        l = i;  // in manchers algo we do l = i-z[i];
+                    }
+                      
+                 
+                 
+             }
+             
+             // finding ansl
+             vector<int> ans;
+             for(int i=0;i<n;i++){
+                 if(z[i]==pat.size()){
+                    // cout<<i-pat.size()<<endl;
+                     ans.push_back(i-pat.size());
+                 }
+             }
+             
+             return ans;
+             
+             
         }
      
 };
