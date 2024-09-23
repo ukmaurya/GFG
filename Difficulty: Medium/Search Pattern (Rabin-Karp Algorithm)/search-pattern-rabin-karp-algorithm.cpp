@@ -9,8 +9,8 @@ class Solution
 {
  public:
     vector<int> search(string pattern, string text) {
-            vector<int> ans;
-            int prime = 256; // we 
+          /*  vector<int> ans;
+            int prime = 256;
             int q = INT_MAX;
             string p = pattern;
             string t = text;
@@ -44,10 +44,53 @@ class Solution
                 
               
             }
-            return ans;
+            return ans; */
+            
+            //try with other values  for practice 
+            
+            vector<int> ans;
+            int prime = 256;
+            int mod = INT_MAX;
+            int n = text.size();
+            int m = pattern.size();
+            int textHash =0;
+            int patHash =0;
+            for(int i=0;i<m;i++){ // cal of hash for first window
+                textHash = (textHash*prime+text[i])%mod;
+                patHash =  (patHash*prime+pattern[i])%mod;
+            }
+            
+            int x = 1;
+            for(int i=0;i<m-1;i++){ // helps in roling hashing 
+                x = (x*prime)%mod;
+            }
+            
+            for(int i=0;i<=n-m;i++){
+                
+                if(textHash==patHash){
+                    int j = 0;
+                    while(j<m && text[i+j]==pattern[j]){ // match the pattern
+                        j++;
+                    }
+                    if(j==m) ans.push_back(i+1);
+                }
+                if(i<n-m){
+                    // recalculate the hash for text
+                    textHash = (( textHash - text[i]*x)*prime+text[i+m])%mod;
+                    if(textHash<0){
+                        textHash = textHash+mod;
+                    }
+                    
+                }
+                
+                
+            }
+            
+           return ans; 
     }
 
 };
+
 
 
 //{ Driver Code Starts.
