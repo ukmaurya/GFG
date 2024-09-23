@@ -6,65 +6,62 @@ using namespace std;
 // } Driver Code Ends
 class Solution
 { 
-   vector<int> lps(string s){
-       int n = s.size();
-       vector<int> ans(n,0);
-       int i=0;
-       int j=1;
-       while(j<n){
-           if(s[i]==s[j]){
-               ans[j] = i+1;
-               i++;
-               j++;
-              
-           }
-           else{ // instead of moving j , we will move i 
-               if(i==0){
-                  ans[j]=0;
-                   j++;
-               }
-               else{
-                   i = ans[i-1];
-               }
-            
-           }
-          
-       }
-       return ans;
-   }
+   private: 
+     vector<int> calLps(string &pat){
+         int n = pat.size();
+         vector<int> lps(n,0);
+         int prefix =0;
+         int suffix =1;
+         while(suffix<n){
+             
+             if(pat[prefix]==pat[suffix]){
+                 lps[suffix] = prefix+1;
+                 prefix++;
+                 suffix++;
+             }
+             else{
+                 if(prefix==0){
+                     suffix++;
+                 }
+                 else{
+                     prefix = lps[prefix-1];
+                 }
+                
+             }
+             
+             
+         }
+         return lps;
+     }
     
     public:
         vector<int> search(string pat, string txt)
         {
-            int n  = pat.size();
-            int m = txt.size();
-            vector<int>LPS = lps(pat);
-            vector<int> ans;
-            int i=0;
-            int j=0;
-            while(j<m){
-                if(pat[i]==txt[j]){
-                    i++;
-                    j++;
-                    if(i==n){
-                        ans.push_back(j-n+1);
-                        i=LPS[i-1];
-                    }
-                }
-                else{
-                    if(i==0){
-                        j++;
-                    }
-                    else{
-                        i=LPS[i-1];
-                    }
-                }
-            }
+           vector<int> lps = calLps(pat);
+           int n = pat.size();
+           int m = txt.size();
+           int i =0;
+           int j =0;
+           vector<int> ans;
+           while(j<m){
+               if(pat[i]==txt[j]){
+                   i++;
+                   j++;
+                   if(i==n){
+                       ans.push_back(j-n+1);//one based indexing
+                   }
+               }
+               else{
+                   if(i==0){
+                       j++;
+                   }
+                   else{
+                      i= lps[i-1]; 
+                   }
+               }
+           }
            
-            if(ans.size()==0){
-                return{-1};
-            }
-            return ans;
+           return ans;
         }
      
 };
