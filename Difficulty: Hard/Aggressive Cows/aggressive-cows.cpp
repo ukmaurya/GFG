@@ -8,42 +8,43 @@ using namespace std;
 // User function Template for C++
 
 class Solution {
-    bool isPossible(int mid , vector<int>&stalls , int k){
-        int n = stalls.size();
-        int count=1;
-        int prev = stalls[0];
-        for(int i=1;i<n;i++){
-            if(stalls[i]-prev >= mid){
-                prev = stalls[i];
-                count++;
-            }
-        }
-        if(count>=k){
-            return true;
-            
-        }
-        return false;
-    }
+    private:
+     bool possible(vector<int>&stalls , int k ,  int mid ){
+         int n = stalls.size();
+         int count = 1;
+         int prev = 0;
+         for(int i=1;i<n;i++){
+             if(stalls[i]-stalls[prev] >= mid){
+                 count++;
+                 prev = i;
+             }
+             
+         }
+         if(count>=k){
+             return true;
+         }
+         return false;
+     }
 public:
 
     int solve(int n, int k, vector<int> &stalls) {
     
-        // Write your code here
-        sort(stalls.begin() , stalls.end());
-        int start = 0;
-        int end = stalls[n-1]-stalls[0]; //INT_MIN;
-        int ans = -1;
-        while(start<=end){
-            int mid = start +(end-start)/2;
-            if(isPossible(mid , stalls, k)){
-                ans = mid ; // max(ans , mid);
-                start = mid+1;
-             }
-             else{
-                 end = mid-1;
-             }
-        }
-        return ans;
+           
+            int ans = -1;
+            sort(stalls.begin() , stalls.end());
+             int start = 0;
+            int end = stalls[n-1] - stalls[0];
+            while(start<= end){
+                int mid = (start+end)/2;
+                if(possible(stalls , k , mid)){
+                    ans = mid ; 
+                   start = mid+1;
+                }
+                else{
+                   end = mid-1;
+                }
+            }
+            return ans;
     }
 };
 
