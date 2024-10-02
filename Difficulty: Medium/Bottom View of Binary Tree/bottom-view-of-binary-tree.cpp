@@ -94,32 +94,31 @@ Node* buildTree(string str)
 //Function to return a list containing the bottom view of the given tree.
 
 class Solution {
-    private:
-      void helper(Node* root, int col, int level, map<int, pair<int, int>>& mp) {
-        if (!root) return;
-    
-        if (mp.find(col) == mp.end() || level >= mp[col].second) {
-            mp[col] = {root->data, level};
-        }
-    
-        helper(root->left, col - 1, level + 1, mp);
-        helper(root->right, col + 1, level + 1, mp);
-    }
   public:
     vector <int> bottomView(Node *root) {
-        
-         map<int, pair<int, int>> mp;
-        int col = 0, level = 0;
-        helper(root, col, level, mp);
-        
+        // Your Code Here
         vector<int> ans;
-        for (auto it : mp) {
-            ans.push_back(it.second.first);
+        queue<pair<Node * ,int >>q ; // node , vertical line number
+        if(root==NULL) return ans;
+        map<int , int > mp; // vertical line num , data
+        q.push({root,0});
+        while(!q.empty()){
+            auto i = q.front();
+            q.pop();
+            Node * temp = i.first; // with iterator use dot 
+            int line =  i.second;
+             mp[line]= temp->data; // row number is not required since , lower level comes afterwords only 
+            if(temp->left) q.push({temp->left,line-1});
+            if(temp->right) q.push({temp->right, line+1});
+            
         }
-    
+        for(auto it: mp){
+            ans.push_back(it.second);
+        }
         return ans;
     }
 };
+
 
 //{ Driver Code Starts.
 
