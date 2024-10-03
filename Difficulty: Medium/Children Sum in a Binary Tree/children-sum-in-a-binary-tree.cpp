@@ -102,48 +102,34 @@ struct Node
 */
 
 class Solution{
-    private:
-    bool flag=true;
-    bool checkLeaves(Node *root){
+    bool solve(Node* root){
+        if(root==NULL)
+          return true;
         if(root->left==NULL && root->right==NULL){
             return true;
         }
-        return false;
-    }
-    void solve(Node *root){
-        if(checkLeaves(root)){
-            return ;
-        }
-        int left = 0;
-        int right = 0;
-        if(root->left){
-            left = root->left->data;
-        }
-        if(root->right){
-            right = root->right->data;
-        }
-        if(root->data != left+right){
-            flag=false;
-            return;
-        }
-        if(root->left)
-          solve(root->left);
-        if(root->right)  
-          solve(root->right);
         
-        
+        int l = 0;
+        int r = 0;
+        if(root->left !=NULL)
+          l = root->left->data;
+        if(root->right!=NULL)
+          r = root->right->data;
+        if(root->data != l+r)
+           return false;
+        bool left = solve(root->left);
+        bool right = solve(root->right);
+        return left&&right;
     }
     public:
     //Function to check whether all nodes of a tree have the value 
     //equal to the sum of their child nodes.
     int isSumProperty(Node *root)
     {
-     // Add your code here
-     solve(root);
-     if(flag==true)
-      return 1;
-      
-     return 0; 
+         bool ans = solve(root);
+         if(ans==true)
+           return 1;
+         return 0;
     }
 };
 
