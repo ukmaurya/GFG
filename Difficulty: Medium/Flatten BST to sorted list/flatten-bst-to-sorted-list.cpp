@@ -128,36 +128,56 @@ public:
 
 class Solution
 {
-    Node *pred(Node* target){
-         
-        if(target ==NULL )
-          return target;
-        Node* temp = target;  
-        temp = temp->left;
-        while(temp&&temp->right){
-            temp=temp->right;
-        }
-        return temp;
-}
+   
 public:
     Node *flattenBST(Node *root)
     {
-        // code here
-          if (!root)
+        // iterative 
+       
+       // Base case: if the tree is empty, return NULL
+    if (root == NULL) {
         return NULL;
-        
-    Node* pre = pred(root);
-    Node* head2 = flattenBST(root->left);
-    if (pre)
-        pre->right = root;
-    root->left = NULL;
-    Node* head1 = flattenBST(root->right);
-    root->right = head1;
-    return head2 ? head2 : root;
+    }
 
+    Node *cur = root;
+    Node *head = NULL; // To track the new head of the flattened tree
+    Node *prev = NULL; // To track the previously processed node
+    
+    while (cur) {
+        // If the current node has a left child
+        if (cur->left) {
+            // Find the rightmost node in the left subtree
+            Node *temp = cur->left;
+            while (temp->right) {
+                temp = temp->right;
+            }
+            
+            // Re-link the rightmost node to the current node's right subtree
+            temp->right = cur;
+            
+            // Move the left child to the right and set the left to NULL
+            Node *leftSubtree = cur->left;
+            cur->left = NULL;
+            cur = leftSubtree; // Move to the left child, which is now the current node
+        } else {
+            // If there's no left child, we're processing the current node
+            if (head == NULL) {
+                head = cur; // Set head if this is the first node (smallest element)
+            }
+
+            if (prev != NULL) {
+                prev->right = cur; // Connect the previous node to the current node
+            }
+            prev = cur; // Update previous node
+            
+            // Move to the right child
+            cur = cur->right;
+        }
+    }
+    
+    return head; // Return the new head of the flattened tree
     }
 };
-
 
 //{ Driver Code Starts.
 
