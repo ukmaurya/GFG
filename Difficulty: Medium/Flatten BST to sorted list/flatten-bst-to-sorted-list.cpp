@@ -128,56 +128,50 @@ public:
 
 class Solution
 {
+    private : 
    
 public:
     Node *flattenBST(Node *root)
     {
         // iterative 
-       
-       // Base case: if the tree is empty, return NULL
-    if (root == NULL) {
-        return NULL;
-    }
-
-    Node *cur = root;
-    Node *head = NULL; // To track the new head of the flattened tree
-    Node *prev = NULL; // To track the previously processed node
-    
-    while (cur) {
-        // If the current node has a left child
-        if (cur->left) {
-            // Find the rightmost node in the left subtree
-            Node *temp = cur->left;
-            while (temp->right) {
-                temp = temp->right;
-            }
-            
-            // Re-link the rightmost node to the current node's right subtree
-            temp->right = cur;
-            
-            // Move the left child to the right and set the left to NULL
-            Node *leftSubtree = cur->left;
-            cur->left = NULL;
-            cur = leftSubtree; // Move to the left child, which is now the current node
-        } else {
-            // If there's no left child, we're processing the current node
-            if (head == NULL) {
-                head = cur; // Set head if this is the first node (smallest element)
-            }
-
-            if (prev != NULL) {
-                prev->right = cur; // Connect the previous node to the current node
-            }
-            prev = cur; // Update previous node
-            
-            // Move to the right child
-            cur = cur->right;
+         bool headFlag = true;
+         Node *prev = NULL;
+        Node *head = NULL;
+        if(root==NULL){
+            return root;
         }
-    }
-    
-    return head; // Return the new head of the flattened tree
+        Node* cur = root;
+        while(cur){
+            Node *temp = cur->left;
+            if(temp){
+                while(temp && temp->right){
+                    temp = temp->right;
+                  }
+                 temp->right = cur;
+                 Node *dummy = cur;
+                 cur = cur->left;
+                 dummy->left = NULL;
+            }
+            else{
+                if(headFlag == true){
+                    head = cur;
+                    headFlag = false;
+                }
+               if(prev != NULL){
+                    prev->right = cur;
+                }
+                 prev = cur;
+                cur = cur->right;
+            }
+           
+            
+        }
+        
+       return head; 
+       
     }
 };
+
 
 //{ Driver Code Starts.
 
