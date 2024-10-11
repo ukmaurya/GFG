@@ -30,12 +30,43 @@ class Solution{
 	public:
 	int perfectSum(int arr[], int n, int sum)
 	{
-	      int mod = 1e9+7;
-        vector<vector<int>> dp(n,vector<int>(sum+1,-1));
-        int ans = solve(0 , arr, n, sum ,dp ); // number of subset with sum considering n-1 indexes 
-        return ans;
+	   //   int mod = 1e9+7;
+    //     vector<vector<int>> dp(n,vector<int>(sum+1,-1));
+    //     int ans = solve(0 , arr, n, sum ,dp ); // number of subset with sum considering n-1 indexes 
+    //     return ans;
 	    
+	    
+	       int mod = 1e9+7;
+	       vector<vector<int>>dp(n+1 , vector<int>(sum+1 , 0));
+	       
+	       
+	       
+	       
+	     //  intialisation 
+	      for(int i=0;i<n;i++){
+	            dp[i][0]=1;
+	            
+	           
+	       }
+	       if(arr[n-1]<=sum)
+	         dp[n-1][arr[n-1]]=1; //sequence of initialisation is very  important 
+	       if(arr[n-1]==0){
+	                dp[n-1][0]=2;
+	        }
+	        
+	        for(int i=n-2;i>=0;i--){
+	            for(int j=0;j<=sum;j++){
+	               
+	                int ex = dp[i+1][j];
+	                int in=0;
+	                if(arr[i]<=j)
+	                  in = dp[i+1][j-arr[i]];
+	                  
+	                dp[i][j] = (in+ex)%mod; 
+	            }
+	        }
 	   
+	    return dp[0][sum];
 	}
 	  
 };
