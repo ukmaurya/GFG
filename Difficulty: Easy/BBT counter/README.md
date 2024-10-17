@@ -1,0 +1,10 @@
+<h2><a href="https://www.geeksforgeeks.org/problems/bbt-counter4914/1">BBT counter</a></h2><h3>Difficulty Level : Difficulty: Easy</h3><hr><div class="problems_problem_content__Xm_eO"><p><span style="font-size: 14pt;">You are given a height&nbsp;<strong><code>h</code></strong>. Your task is to count the maximum number of distinct balanced binary trees that can be formed with height&nbsp;<code>h</code>. The result should be printed modulo&nbsp;<span class="katex"><span class="katex-mathml">10<sup>9</sup>+7</span>.</span></span></p>
+<p><span style="font-size: 14pt;">A&nbsp;<strong>balanced binary tree</strong>&nbsp;is defined as a tree in which the height difference between the left and right subtrees of every node is at most 1.</span></p>
+<p><span style="font-size: 14pt;"><strong>Examples :</strong></span></p>
+<pre><span style="font-size: 14pt;"><strong>Input</strong>: h = 2
+<strong>Output:</strong>&nbsp;3&nbsp;
+<strong>Explanation</strong>: The maximum number of balanced binary trees possible with height 2 is 3. <br></span><span style="font-size: 14pt;"><img src="https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/704986/Web/Other/blobid0_1718960297.png" width="435" height="79"></span></pre>
+<pre><span style="font-size: 14pt;"><strong>Input: </strong>h = 3
+<strong>Output:&nbsp;</strong>15
+<strong>Explanation</strong>: The maximum number of balanced binary trees possible with height 3 is 15. <br></span><span style="font-size: 14pt;"><img src="https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/704986/Web/Other/blobid1_1718960316.png" width="462" height="157"></span></pre>
+<p><span style="font-size: 14pt;"><strong>Constraints:</strong><br>1&lt;= h &lt;=10<sup>5</sup></span></p></div><br><p><span style=font-size:18px><strong>Topic Tags : </strong><br><code>Mathematical</code>&nbsp;<code>Tree</code>&nbsp;<code>Data Structures</code>&nbsp;<code>Algorithms</code>&nbsp;
