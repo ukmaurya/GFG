@@ -4,46 +4,48 @@ using namespace std;
 
 
 // } Driver Code Ends
-class Solution{
-    private:
-    bool isSafe(int u, vector<int>&color , bool graph[101][101] ){
-        for(int index = 0;index<=101;index++){
-            if(index==u)
-             continue;
-            if(graph[u][index]==true && color[index]==color[u]){
-                return false;
-            }
-        }
-        return true;
-        
+class Solution {
+    bool isSafe(vector<int>adj[] , int node , vector<int>&colour , int col){
+        for(auto it : adj[node]){
+                if(colour[it]==col){
+                    return false;
+                }
+         }
+         return true;
     }
-    bool solve(int u ,int m , int n , bool graph[101][101] , vector<int>&color){
-           if(u==n){
-               return true;
-           }
-          for(int k=1;k<=m;k++){
-               color[u]=k;
-               if(isSafe(u,color,graph)){
-                  
-                   if(solve(u+1,m,n,graph ,color) == true){
-                        return true;
-                  }
-                 
-               }
-               color[u]=-1;  
-                   
-          }
-            
+    private:
+    bool solve(int node , vector<int>adj[]  , vector<int>&colour , int n , int m  ){
+        if(node == n){ 
+            return true;
+        }
+        
+        for(int i=1;i<=m;i++){
+             
+            if(isSafe(adj, node , colour , i)==true){
+                  colour[node]= i;
+               if( solve(node+1 , adj, colour , n , m)==true) 
+                  return true;
+            }
+             
+         }
+        
+        
         return false;
     }
-public:
-    // Function to determine if graph can be coloured with at most M colours such
-    // that no two adjacent vertices of graph are coloured with same colour.
-    bool graphColoring(bool graph[101][101], int m, int n) {
-        
-        vector<int> color(n,-1);
-        
-        return solve(0,m,n,graph , color);
+  public:
+    bool graphColoring(int v, vector<pair<int, int>>& edges, int m) {
+          
+                vector<int> adj[v];
+                
+                for(auto it: edges){
+                    adj[it.first].push_back(it.second);
+                    adj[it.second].push_back(it.first);
+                }
+                
+                vector<int> colour(v, -1);
+                bool ans = solve(0,adj,colour ,v,m);
+                return ans;
+                
     }
 };
 
@@ -52,22 +54,36 @@ public:
 int main() {
     int t;
     cin >> t;
+    cin.ignore();
     while (t--) {
-        int n, m, e;
-        cin >> n >> m >> e;
-        int i;
-        bool graph[101][101];
-        for (i = 0; i < n; i++) {
-            memset(graph[i], 0, sizeof(graph[i]));
+        int n, m;
+        cin >> n;
+        cin.ignore(); // Ignore newline after reading n
+        vector<int> arr;
+        string input;
+        getline(cin, input); // Read the entire line for the array elements
+
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            arr.push_back(number); // Populate the array with edge values
         }
-        for (i = 0; i < e; i++) {
-            int a, b;
-            cin >> a >> b;
-            graph[a - 1][b - 1] = 1;
-            graph[b - 1][a - 1] = 1;
+        cin >> m;
+        cin.ignore(); // Ignore newline after reading m
+
+        int edges_count = arr.size();
+        vector<pair<int, int>> edges(edges_count /
+                                     2); // Correct size of the edges vector
+
+        for (int i = 0; i < edges_count; i += 2) {
+            int l1 = arr[i];
+            int l2 = arr[i + 1];
+            edges[i / 2] = {l1, l2}; // Properly assign the pair
         }
+
         Solution ob;
-        cout << ob.graphColoring(graph, m, n) << endl;
+        cout << (ob.graphColoring(n, edges, m) ? "true" : "false")
+             << endl; // Call the graph coloring function
     }
     return 0;
 }
