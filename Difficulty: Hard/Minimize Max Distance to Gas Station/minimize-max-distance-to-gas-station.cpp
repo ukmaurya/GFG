@@ -5,63 +5,46 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
-    bool possible(vector<int>&stations , double mid , int k ){
+    bool isposs(vector<int>&stations , int k , double mid){
         int n = stations.size();
-        int atleastStations = 0;
+        int count = 0;
         for(int i=1;i<n;i++){
-            double diff = stations[i]-stations[i-1];
-            atleastStations += floor(diff/mid*1.0);
-        }
-        if(atleastStations<=k){
+            double diff = (stations[i]-stations[i-1]);
+            double temp = floor(diff/mid*1.0);
+            count += temp;
+         }
+        if(count<=k){
             return true;
         }
         return false;
+        
     }
   public:
-    double findSmallestMaxDist(vector<int> &stations, int k) {
-         
-        //  priority_queue<double> pq;
-        //  int n = stations.size();
-        //  for(int i=1;i<n;i++){
-        //      pq.push(stations[i]-stations[i-1]);
-        //  }
-       
-        //  while(k--){
-        //      double t = pq.top();
-        //      pq.pop();
-        //      pq.push(t/2);
-        //      pq.push(t/2);
-           
-             
-        //  }
-        //  double ans = INT_MIN;
-        //  while(!pq.empty()){
-        //      ans = max(ans , pq.top());
-        //      pq.pop();
-        //  }
-        //  return ans;
+    double findSmallestMaxDist(vector<int>&stations, int k) {
+        // Code here
+        int n = stations.size();
+        double ans = -1.0;
+        double start = 0.0;
+        double end = 0.0;
+        for(int i=1;i<n;i++){
+            end = max(end , (1.0*stations[i]-1.0*stations[i-1]));
+        }
         
-        // above method is wrong check example -- distance is 1 to 12 and u want to put 2 more station 
-   
-         int maxi = 0;
-         int n = stations.size();
-         for(int i=0;i<n-1;i++){
-              maxi = max(maxi , stations[i+1]-stations[i]);
-         }
-         double start = 0;
-         double end = maxi;
-         double ans =-1;
-         while(end-start > 1e-6){
-             double mid = start-(start-end)/2.0;
-             if(possible(stations , mid ,k)){
-                 ans = mid;
-                 end = mid; // since double 
-             }
-             else{
-                 start = mid;
-             }
-         }
-       return ans;
+        while(end-start > 1e-6 ){
+            double mid = (start +end)/2.0;
+            if(isposs(stations , k , mid)){
+                ans = mid;
+                end = mid; // since double since many points may be left 
+            }
+            else{
+                start = mid;
+            }
+            
+        }
+        
+        return ans;
+        
+        
     }
 };
 
@@ -81,6 +64,7 @@ int main() {
         Solution obj;
         cout << fixed << setprecision(2) << obj.findSmallestMaxDist(stations, k)
              << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
