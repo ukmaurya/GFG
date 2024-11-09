@@ -12,12 +12,12 @@ class Solution
              txt = pat+"#"+txt;
              int n = txt.size();
              vector<int>z(n,0);
-             int l =0;
+             int l = 0;
              int r = 0;
              string s = txt;
              //same as manchers algorithm 
              for(int i=1;i<n;i++){
-                 int mirr = i-l;
+                 int mirr = i-l;  // in manchers algo mirr = l+r-i since it has to be in palindromic range 
                  if(i<r){
                     z[i] = min(z[mirr] , r-i);
                  }
@@ -49,6 +49,7 @@ class Solution
      
 };
 
+
 //{ Driver Code Starts.
 int main()
 {
@@ -66,7 +67,9 @@ int main()
             for (int i : res)
                 cout << i << " ";
         cout << endl;
-    }
+    
+cout << "~" << "\n";
+}
     return 0;
 }
 
