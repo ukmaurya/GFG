@@ -23,25 +23,43 @@ class Solution{
     }
 	public:
 	vector<int>AllPrimeFactors(int N) {
-	    if(N==1)
-	      return { };
-	     vector<int> ans;
-	     for(int i=2;i*i<=N;i++){
-	         if(N%i==0 && checkPrime(i)){
-	             ans.push_back(i);
+	   // if(N==1)
+	   //   return { };
+	   //  vector<int> ans;
+	   //  for(int i=2;i*i<=N;i++){
+	   //      if(N%i==0 && checkPrime(i)){
+	   //          ans.push_back(i);
 	          
-	         }
-	        if( N%i==0 && N/i != i && checkPrime(N/i)){
-	             ans.push_back(N/i);
-	            }
+	   //      }
+	   //     if( N%i==0 && N/i != i && checkPrime(N/i)){
+	   //          ans.push_back(N/i);
+	   //         }
 	       
-	     }
-	     if( N>1 && checkPrime(N)){
-	         ans.push_back(N);
-	     }
-	     return ans;
+	   //  }
+	   //  if( N>1 && checkPrime(N)){
+	   //      ans.push_back(N);
+	   //  }
+	   //  return ans;
+	   
+	   // above sol was o(n) and follo is sqrt(N)*logn
+	    vector<int> ans;
+	    for(int i=2;i*i<=N;i++){
+	        while(N%i==0){
+	            if(ans.size()==0 || ans.back()!= i){
+	                ans.push_back(i);
+	               
+	            }
+	             N=N/i;
+	        }
+	        
+	    }
+	    if(N>1){ // number if prime 
+	        ans.push_back(N);
+	    }
+	   return ans; 
 	}
 };
+
 
 //{ Driver Code Starts.
 int main(){
