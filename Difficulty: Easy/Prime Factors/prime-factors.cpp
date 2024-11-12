@@ -8,42 +8,38 @@ using namespace std;
 
 
 class Solution{
+     bool checkPrime(int n ){
+        int count=0;
+        for(int i=1;i*i<=n;i++){ // are we have not used sqrt function since in stl sqrt 
+                                 // takes log n times 
+            if(n%i==0){
+                count++;
+                if((n/i) != i) // since alst factors will be same 
+                  count++;
+            }
+        }    
+        if(count==2) return true;
+        return false;
+    }
 	public:
 	vector<int>AllPrimeFactors(int N) {
-	   /* vector<bool> sieve(N+1 , true);
-	    sieve[0]=sieve[1]=false;
-	    for(int i=2;i*i<=N;i++){
-	        if(sieve[i]==true){
-	            for(int j=2*i;j<=N; j+=i ){
-	                sieve[j] = false;
+	    if(N==1)
+	      return { };
+	     vector<int> ans;
+	     for(int i=2;i*i<=N;i++){
+	         if(N%i==0 && checkPrime(i)){
+	             ans.push_back(i);
+	          
+	         }
+	        if( N%i==0 && N/i != i && checkPrime(N/i)){
+	             ans.push_back(N/i);
 	            }
-	        }
-	    }
-	    vector<int> ans;
-	    for(int i=2;i<=N;i++){
-	        if(sieve[i]==true && N%i==0){
-	            ans.push_back(i);
-	        }
-	    }
-	    return ans; */
-	    
-	    // above solution was giving TLE
-	    vector<int> ans;
-	    for(int i=2;i<=N;i++){
-	        while(N%i==0){
-	            if(ans.size()==0 || ans.back()!= i){
-	                ans.push_back(i);
-	               
-	            }
-	             N=N/i;
-	        }
-	        
-	    }
-	    if(N>1){ // number if prime 
-	        ans.push_back(N);
-	    }
-	   return ans; 
-	    
+	       
+	     }
+	     if( N>1 && checkPrime(N)){
+	         ans.push_back(N);
+	     }
+	     return ans;
 	}
 };
 
@@ -59,7 +55,9 @@ int main(){
 		for(auto i: ans)
 			cout << i <<" ";
 		cout <<"\n";
-	}  
+	
+cout << "~" << "\n";
+}  
 	return 0;
 }
 // } Driver Code Ends
