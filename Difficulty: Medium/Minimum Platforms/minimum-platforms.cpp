@@ -1,6 +1,4 @@
 //{ Driver Code Starts
-// Program to find minimum number of platforms
-// required on a railway station
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -11,49 +9,64 @@ class Solution {
     // Function to find the minimum number of platforms required at the
     // railway station such that no train waits.
     int findPlatform(vector<int>& arr, vector<int>& dep) {
-        
+        // Your code here
         int ans = 0;
         int n = arr.size();
         sort(arr.begin() , arr.end());
         sort(dep.begin() , dep.end());
-        int i=0;
-        int j=0;
-        int platform =0;
+        // use merging logic
+        int i = 0;
+        int j = 0;
+        int plat=0;
         while(i<n && j<n){
             if(arr[i]<=dep[j]){
-                platform++;
+                ans++;
                 i++;
             }
             else{
-                platform--;
+                ans--;
                 j++;
             }
-            ans = max(ans , platform);
+           plat = max(ans ,plat );
         }
-        
-        return ans;
+        return plat;
     }
 };
 
 
 //{ Driver Code Starts.
-//  Driver code
+
 int main() {
     int t;
     cin >> t;
+    cin.ignore();
     while (t--) {
-        int n;
-        cin >> n;
-        vector<int> arr(n);
-        vector<int> dep(n);
-        for (int i = 0; i < n; i++)
-            cin >> arr[i];
-        for (int j = 0; j < n; j++) {
-            cin >> dep[j];
+        vector<int> arr, dep;
+        string input;
+
+        // Read first array (arr)
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            arr.push_back(number);
         }
+
+        // Read second array (dep)
+        getline(cin, input);
+        stringstream ss2(input);
+        while (ss2 >> number) {
+            dep.push_back(number);
+        }
+
+        // Assuming Solution class is defined elsewhere with a method findPlatform
         Solution ob;
-        cout << ob.findPlatform(arr, dep) << endl;
+        cout << ob.findPlatform(arr, dep);
+
+        cout << endl;
+        cout << "~\n";
     }
     return 0;
 }
+
 // } Driver Code Ends
