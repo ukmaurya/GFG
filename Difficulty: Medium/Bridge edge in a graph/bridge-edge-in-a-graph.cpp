@@ -4,52 +4,34 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution
-{
+{ 
     private:
-    void components(int node ,vector<bool>&vis ,  vector<int>adj[]){
-        vis[node]= true;
-        for(auto it: adj[node]){
-            if(vis[it]==false){
-                components(it, vis,adj);
-            }
-        }
-    }
+      void dfs(int node , vector<int> adj[] , int c , int d , vector<int>&vis){
+          vis[node]=1;
+          for(auto it : adj[node]){
+              if((node == c && it == d)||(node==d && it==c))
+               continue;
+              if( vis[it]==0 ){
+                  dfs(it,adj,c,d,vis);
+              }
+          }
+      }
 	public:
     //Function to find if the given edge is a bridge in graph.
     int isBridge(int V, vector<int> adj[], int c, int d) 
     {
-          int c1 = 0;
-          vector<bool> vis(V,false);
-          for(int i=0;i<V;i++){
-              if(vis[i]==false){
-                  c1++;
-                  components(i ,vis, adj);
-              }
-          }
-         
-         vector<int> newAdj[V];
-         for(int i=0;i<V;i++){
-             vis[i]=false;
-             for(auto it:adj[i]){
-                 if((i==c && it==d)||(i==d && it==c))
-                  continue;
-                newAdj[i].push_back(it);
-                newAdj[it].push_back(i);
-             }
-         }
-         int c2 = 0;
-          for(int i=0;i<V;i++){
-              if(vis[i]==false){
-                  c2++;
-                  components(i ,vis, newAdj);
-              }
-          }
-         if(c1==c2){
-             return false;
-         }
+              vector<int> vis(V,0);
+      
+     
+        dfs(c,adj,c,d,vis);
+                 
+        
+       if(vis[d]==0)
          return true;
+       return false;
     }
 };
+
 
 //{ Driver Code Starts.
 
@@ -75,7 +57,9 @@ int main()
         
         Solution obj;
     	cout << obj.isBridge(V, adj, c, d) << "\n";
-    }
+    
+cout << "~" << "\n";
+}
 
     return 0;
 }
